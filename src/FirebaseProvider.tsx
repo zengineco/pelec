@@ -30,6 +30,11 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const { setProgress } = useGameStore();
 
   useEffect(() => {
+    if (!auth.onAuthStateChanged) {
+      setLoading(false);
+      return;
+    }
+
     const testConnection = async () => {
       try {
         await getDocFromServer(doc(db, 'test', 'connection'));
