@@ -10,61 +10,11 @@ import Workbench from './components/workbench/Workbench';
 import CRTMenu from './components/ui/CRTMenu';
 import Clipboard from './components/ui/Clipboard';
 import Pegboard from './components/ui/Pegboard';
-import { FirebaseProvider, useAuth } from './FirebaseProvider';
 
-function AppContent() {
+export default function App() {
   const [view, setView] = useState<'menu' | 'workbench' | 'levels'>('menu');
   const [showSettings, setShowSettings] = useState(false);
   const { currentLevel, togglePause, isPaused } = useGameStore();
-  const { user, login, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-[#1a1a1a] text-green-500 font-mono">
-        <motion.div
-          animate={{ opacity: [0.2, 1, 0.2] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-        >
-          INITIALIZING SYSTEM...
-        </motion.div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    const isConfigMissing = !import.meta.env.VITE_FIREBASE_API_KEY;
-
-    return (
-      <div className="relative w-full h-screen bg-[#1a1a1a] flex items-center justify-center overflow-hidden font-mono text-zinc-400">
-        <div className="absolute inset-0 bg-[url('https://picsum.photos/seed/workbench/1920/1080?blur=10')] bg-cover opacity-20" />
-        <div className="z-10 text-center p-12 bg-zinc-900/80 border border-zinc-700 rounded-lg backdrop-blur-md shadow-2xl max-w-md">
-          <h1 className="text-4xl font-black text-green-500 italic mb-8 tracking-tighter">PROJECT ELECTRIFY</h1>
-          
-          {isConfigMissing ? (
-            <div className="mb-8 p-4 bg-amber-500/10 border border-amber-500/50 rounded text-amber-500 text-sm">
-              <p className="font-bold mb-2 uppercase tracking-widest">Configuration Required</p>
-              <p>Please set your Firebase API keys in the <strong>Settings</strong> menu to enable authentication and progress saving.</p>
-            </div>
-          ) : (
-            <p className="mb-8 text-zinc-500 uppercase tracking-widest text-xs">Authentication Required to Access Workbench</p>
-          )}
-
-          <button
-            onClick={login}
-            disabled={isConfigMissing}
-            className={`px-8 py-4 font-black uppercase tracking-widest transition-all transform hover:scale-105 ${
-              isConfigMissing 
-                ? 'bg-zinc-700 text-zinc-500 cursor-not-allowed' 
-                : 'bg-green-500 text-black hover:bg-green-400'
-            }`}
-          >
-            Sign In with Google
-          </button>
-        </div>
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(255,0,0,0.02),rgba(0,255,0,0.01),rgba(0,0,118,0.02))] bg-[length:100%_4px,3px_100%] z-50" />
-      </div>
-    );
-  }
 
   return (
     <div className="relative w-full h-screen bg-[#1a1a1a] overflow-hidden font-mono text-zinc-400">
@@ -132,13 +82,5 @@ function AppContent() {
       {/* Global Scanline Overlay for CRT feel */}
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(255,0,0,0.02),rgba(0,255,0,0.01),rgba(0,0,118,0.02))] bg-[length:100%_4px,3px_100%] z-50" />
     </div>
-  );
-}
-
-export default function App() {
-  return (
-    <FirebaseProvider>
-      <AppContent />
-    </FirebaseProvider>
   );
 }

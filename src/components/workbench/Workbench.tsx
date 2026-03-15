@@ -9,18 +9,14 @@ import { CircuitSolver } from '../../engine/solver';
 import { ComponentType, CircuitComponent } from '../../types';
 import { Zap, Play, Square, RotateCcw, CheckCircle } from 'lucide-react';
 import { LEVELS } from '../../constants/levels';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../../firebase';
-import { useAuth } from '../../FirebaseProvider';
 
 export default function Workbench() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { currentLevel, circuit, addComponent, resetCircuit, completeLevel, progress } = useGameStore();
+  const { currentLevel, circuit, addComponent, resetCircuit, completeLevel } = useGameStore();
   const [isRunning, setIsRunning] = useState(false);
   const [selectedType, setSelectedType] = useState<ComponentType>('WIRE');
   const [isLevelComplete, setIsLevelComplete] = useState(false);
   const [telemetry, setTelemetry] = useState({ pressure: 0, flow: 0 });
-  const { user } = useAuth();
 
   const levelData = LEVELS.find(l => l.id === currentLevel);
 
@@ -94,23 +90,6 @@ export default function Workbench() {
     const safety = 100; // No sparks yet
 
     completeLevel(currentLevel, efficiency, safety);
-
-    if (user) {
-      const progressRef = doc(db, 'users', user.uid, 'progress', 'data');
-      const updatedProgress = {
-        userId: user.uid,
-        completedLevels: Array.from(new Set([...progress.completedLevels, currentLevel])),
-        efficiencyRatings: { ...progress.efficiencyRatings, [currentLevel]: efficiency },
-        safetyRatings: { ...progress.safetyRatings, [currentLevel]: safety },
-        updatedAt: serverTimestamp(),
-      };
-      
-      try {
-        await setDoc(progressRef, updatedProgress);
-      } catch (error) {
-        console.error("Error saving progress:", error);
-      }
-    }
   };
 
   const drawGrid = (ctx: CanvasRenderingContext2D, w: number, h: number) => {
