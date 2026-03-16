@@ -42,22 +42,49 @@ export class CircuitSolver {
     nodes.set(negNode, 0);
 
     // 4. Iterative Relaxation (Solve for Voltage at each node)
-    // This is a numerical approximation of Kirchhoff's Laws
-    for (let iter = 0; iter < 20; iter++) {
+    for (let iter = 0; iter < 30; iter++) {
       updated.forEach(comp => {
-        const n1 = `${comp.position.x - 40},${comp.position.y}`;
-        const n2 = `${comp.position.x + 40},${comp.position.y}`;
+        const rad = (comp.rotation * Math.PI) / 180;
+        const dx = Math.round(Math.cos(rad) * 40);
+        const dy = Math.round(Math.sin(rad) * 40);
+
+        // Port 1 and Port 2 positions
+        const p1x = comp.position.x - dx;
+        const p1y = comp.position.y - dy;
+        const p2x = comp.position.x + dx;
+        const p2y = comp.position.y + dy;
+
+        const n1 = `${p1x},${p1y}`;
+        const n2 = `${p2x},${p2y}`;
         
         const v1 = nodes.get(n1) ?? 0;
         const v2 = nodes.get(n2) ?? 0;
 
         if (comp.type === 'WIRE') {
-          const avg = (v1 + v2) / 2;
-          nodes.set(n1, avg);
-          nodes.set(n2, avg);
-        } else if (comp.type === 'RESISTOR' || comp.type === 'BULB') {
-          // V = I * R -> I = (V1 - V2) / R
-          // For relaxation: move voltages closer based on resistance
+          // Wires are special: they connect ALL 4 neighbors in a grid
+          const neighbors = [
+            `${comp.position.x - 40},${comp.position.y}`,
+            `${comp.position.x + 40},${comp.position.y}`,
+            `${comp.position.x},${comp.position.y - 40}`,
+            `${comp.position.x},${comp.position.y + 40}`,
+          ];
+          
+          let sum = 0;
+          let count = 0;
+          neighbors.forEach(n => {
+            if (nodes.has(n)) {
+              sum += nodes.get(n)!;
+              count++;
+            }
+          });
+
+          if (count > 0) {
+            const avg = sum / count;
+            neighbors.forEach(n => {
+              if (nodes.has(n)) nodes.set(n, avg);
+            });
+          }
+        } else if (comp.type === 'RESISTOR' || comp.type === 'BULB' || comp.type === 'GOAL') {
           const diff = v1 - v2;
           const shift = diff * (1 / (comp.resistance + 1));
           nodes.set(n1, v1 - shift * 0.5);
@@ -65,15 +92,22 @@ export class CircuitSolver {
         }
         
         // Re-pin battery
-        nodes.set(posNode, 12);
-        nodes.set(negNode, 0);
+        const bRad = (battery.rotation * Math.PI) / 180;
+        const bdx = Math.round(Math.cos(bRad) * 40);
+        const bdy = Math.round(Math.sin(bRad) * 40);
+        nodes.set(`${battery.position.x + bdx},${battery.position.y + bdy}`, 12);
+        nodes.set(`${battery.position.x - bdx},${battery.position.y - bdy}`, 0);
       });
     }
 
     // 5. Finalize Component Values
     return updated.map(comp => {
-      const n1 = `${comp.position.x - 40},${comp.position.y}`;
-      const n2 = `${comp.position.x + 40},${comp.position.y}`;
+      const rad = (comp.rotation * Math.PI) / 180;
+      const dx = Math.round(Math.cos(rad) * 40);
+      const dy = Math.round(Math.sin(rad) * 40);
+
+      const n1 = `${comp.position.x - dx},${comp.position.y - dy}`;
+      const n2 = `${comp.position.x + dx},${comp.position.y + dy}`;
       const v1 = nodes.get(n1) ?? 0;
       const v2 = nodes.get(n2) ?? 0;
 

@@ -62,8 +62,14 @@ export default function App() {
             {/* Diegetic HUD Elements */}
             <div className="absolute top-4 right-4 flex gap-4">
               <button 
+                onClick={() => setView('menu')}
+                className="p-2 bg-zinc-800 border border-zinc-700 rounded hover:bg-zinc-700 transition-colors text-[10px] font-bold"
+              >
+                EXIT TO MENU
+              </button>
+              <button 
                 onClick={() => setShowSettings(true)}
-                className="p-2 bg-zinc-800 border border-zinc-700 rounded hover:bg-zinc-700 transition-colors"
+                className="p-2 bg-zinc-800 border border-zinc-700 rounded hover:bg-zinc-700 transition-colors text-[10px] font-bold"
               >
                 MANUAL (ESC)
               </button>

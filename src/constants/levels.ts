@@ -9,13 +9,13 @@ export const LEVELS: Level[] = [
   {
     id: 1,
     title: "The First Spark",
-    description: "Connect the battery to the bulb. Pressure must reach the filament.",
+    description: "Connect the battery to the goal. Pressure must reach the sensor.",
     phase: 1,
     goal_pressure: 10,
     inventory: { BATTERY: 1, WIRE: 10, RESISTOR: 0, BULB: 1, SWITCH: 0, CAPACITOR: 0, INDUCTOR: 0, GOAL: 1 },
     initial_components: [
-      { id: 'b1', type: 'BATTERY', position: { x: 100, y: 100 }, rotation: 0, connections: [], pressure_in: 0, pressure_out: 0, flow_rate: 0, resistance: 0.1, is_active: false, heat_index: 0, fail_point: 100 },
-      { id: 'g1', type: 'GOAL', position: { x: 500, y: 100 }, rotation: 0, connections: [], pressure_in: 0, pressure_out: 0, flow_rate: 0, resistance: 10, is_active: false, heat_index: 0, fail_point: 100 },
+      { id: 'b1', type: 'BATTERY', position: { x: 120, y: 120 }, rotation: 0, connections: [], pressure_in: 0, pressure_out: 0, flow_rate: 0, resistance: 0.1, is_active: false, heat_index: 0, fail_point: 100 },
+      { id: 'g1', type: 'GOAL', position: { x: 480, y: 120 }, rotation: 0, connections: [], pressure_in: 0, pressure_out: 0, flow_rate: 0, resistance: 10, is_active: false, heat_index: 0, fail_point: 100 },
     ]
   },
   {
@@ -26,8 +26,8 @@ export const LEVELS: Level[] = [
     goal_pressure: 10,
     inventory: { BATTERY: 1, WIRE: 20, RESISTOR: 0, BULB: 1, SWITCH: 0, CAPACITOR: 0, INDUCTOR: 0, GOAL: 1 },
     initial_components: [
-      { id: 'b1', type: 'BATTERY', position: { x: 100, y: 100 }, rotation: 0, connections: [], pressure_in: 0, pressure_out: 0, flow_rate: 0, resistance: 0.1, is_active: false, heat_index: 0, fail_point: 100 },
-      { id: 'g1', type: 'GOAL', position: { x: 700, y: 300 }, rotation: 0, connections: [], pressure_in: 0, pressure_out: 0, flow_rate: 0, resistance: 10, is_active: false, heat_index: 0, fail_point: 100 },
+      { id: 'b1', type: 'BATTERY', position: { x: 120, y: 120 }, rotation: 0, connections: [], pressure_in: 0, pressure_out: 0, flow_rate: 0, resistance: 0.1, is_active: false, heat_index: 0, fail_point: 100 },
+      { id: 'g1', type: 'GOAL', position: { x: 680, y: 320 }, rotation: 0, connections: [], pressure_in: 0, pressure_out: 0, flow_rate: 0, resistance: 10, is_active: false, heat_index: 0, fail_point: 100 },
     ]
   },
   {
@@ -38,8 +38,8 @@ export const LEVELS: Level[] = [
     goal_pressure: 10,
     inventory: { BATTERY: 1, WIRE: 15, RESISTOR: 0, BULB: 0, SWITCH: 1, CAPACITOR: 0, INDUCTOR: 0, GOAL: 1 },
     initial_components: [
-      { id: 'b1', type: 'BATTERY', position: { x: 100, y: 100 }, rotation: 0, connections: [], pressure_in: 0, pressure_out: 0, flow_rate: 0, resistance: 0.1, is_active: false, heat_index: 0, fail_point: 100 },
-      { id: 'g1', type: 'GOAL', position: { x: 500, y: 100 }, rotation: 0, connections: [], pressure_in: 0, pressure_out: 0, flow_rate: 0, resistance: 10, is_active: false, heat_index: 0, fail_point: 100 },
+      { id: 'b1', type: 'BATTERY', position: { x: 120, y: 120 }, rotation: 0, connections: [], pressure_in: 0, pressure_out: 0, flow_rate: 0, resistance: 0.1, is_active: false, heat_index: 0, fail_point: 100 },
+      { id: 'g1', type: 'GOAL', position: { x: 480, y: 120 }, rotation: 0, connections: [], pressure_in: 0, pressure_out: 0, flow_rate: 0, resistance: 10, is_active: false, heat_index: 0, fail_point: 100 },
     ]
   },
   {
